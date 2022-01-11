@@ -15,13 +15,9 @@ class TestService extends ITestService with ServiceHelper {
         manager, NetworkRoutes.TEST, RequestType.POST,
         dataModel: TestModel(registry_no: 'string'));
 
-    print(response);
-
     if (response.data is BaseResponseModel) {
-      print(response.data.toJson());
       return response.data;
     } else {
-      print(response.error.description);
       final errorModel = errorParser<BaseResponseModel, BaseResponseModel>(
           BaseResponseModel(), response.error!.description);
       return errorModel;
