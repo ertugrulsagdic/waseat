@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:kartal/kartal.dart';
-
+import '../../../core/init/lang/locale_keys.g.dart';
 import '../../../../core/base/view/base_widget.dart';
 import '../viewmodel/test_view_model.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class TestView extends StatefulWidget {
   const TestView({Key? key}) : super(key: key);
@@ -24,27 +24,30 @@ class _TestViewState extends State<TestView> with TickerProviderStateMixin {
       onPageBuilder: (BuildContext context, TestViewModel viewModel) =>
           Scaffold(
         appBar: AppBar(
-          title: Text('Welcome'),
+          title: Text(LocaleKeys.welcome.tr()),
         ),
         body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              const Text(
-                'You have pushed the button this many times:',
-              ),
-              Observer(builder: (_) {
-                return Text(
-                  viewModel.number.toString(),
-                  style: Theme.of(context).textTheme.headline4,
-                );
-              }),
-            ],
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  LocaleKeys.lorem.tr(),
+                  textAlign: TextAlign.center,
+                ),
+                Observer(builder: (_) {
+                  return Text(
+                    viewModel.number.toString(),
+                    style: Theme.of(context).textTheme.headline4,
+                  );
+                }),
+              ],
+            ),
           ),
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: viewModel.incrementNumber,
-          tooltip: 'Increment',
           child: const Icon(Icons.add),
         ),
       ),

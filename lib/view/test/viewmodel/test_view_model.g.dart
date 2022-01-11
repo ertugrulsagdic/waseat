@@ -24,6 +24,13 @@ mixin _$TestViewModel on _TestViewModelBase, Store {
     });
   }
 
+  final _$fetchTestAsyncAction = AsyncAction('_TestViewModelBase.fetchTest');
+
+  @override
+  Future<void> fetchTest() {
+    return _$fetchTestAsyncAction.run(() => super.fetchTest());
+  }
+
   final _$_TestViewModelBaseActionController =
       ActionController(name: '_TestViewModelBase');
 

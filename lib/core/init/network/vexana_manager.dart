@@ -23,7 +23,7 @@ class VexanaManager {
         return status! < 500;
       },
       // TODO: Add url
-      baseUrl: 'https://example.com/',
+      baseUrl: 'https://oneri.io/api/',
       // baseUrl: Platform.isAndroid ? _androidBaseUrl : _iosBaseUrl,
       headers: {'language': 'en'},
     ),

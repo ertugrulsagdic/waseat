@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kartal/kartal.dart';
+import 'package:mobx/mobx.dart';
 
 import '../../init/cache/locale_manager.dart';
 import '../../init/navigation/navigation_service.dart';
@@ -16,17 +17,23 @@ abstract class BaseViewModel {
   void setContext(BuildContext context);
   void init();
 
+  @observable
+  bool isLoading = false;
+
+  @action
+  void isLoadingChange() {
+    isLoading = !isLoading;
+  }
+
   void showMessage(BaseResponseModel? model) {
     if (model == null) return;
     ScaffoldMessenger.of(context!).showSnackBar(
       SnackBar(
         behavior: SnackBarBehavior.floating,
         content: Text(
-          model.message ?? model.status.toString(),
+          model.message ?? model.type.toString(),
         ),
-        backgroundColor: model.status!
-            ? context!.colorScheme.onError
-            : context!.colorScheme.error,
+        backgroundColor: model.type! ? Colors.green : Colors.red,
       ),
     );
   }

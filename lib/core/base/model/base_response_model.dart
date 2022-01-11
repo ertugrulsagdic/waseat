@@ -5,11 +5,11 @@ part 'base_response_model.g.dart';
 
 @JsonSerializable()
 class BaseResponseModel extends INetworkModel<BaseResponseModel> {
-  final bool? status;
+  final bool? type;
   final String? message;
   dynamic data;
 
-  BaseResponseModel({this.status, this.message, this.data});
+  BaseResponseModel({this.type, this.message, this.data});
 
   @override
   BaseResponseModel fromJson(Map<String, dynamic> json) {
