@@ -16,14 +16,16 @@ abstract class ServiceHelper {
     if (token != null) {
       options = Options(headers: {'Authorization': token});
     }
+    // TODO: enctypt data if necessary
+    var dataModelJson = dataModel.toJson();
     var response = await manager.send<BaseResponseModel, BaseResponseModel>(
       route.rawValue,
       parseModel: BaseResponseModel(),
       method: method,
       options: options,
-      data: dataModel,
+      data: dataModelJson,
     );
-
+    // TODO: decrypt response if necessary
     return response;
   }
 

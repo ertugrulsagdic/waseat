@@ -2,7 +2,7 @@
 
 enum NetworkRoutes { DEFAULT, TEST }
 
-extension NetwrokRoutesString on NetworkRoutes {
+extension NetworkRoutesString on NetworkRoutes {
   String get rawValue {
     switch (this) {
       case NetworkRoutes.DEFAULT:
