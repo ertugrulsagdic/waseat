@@ -1,4 +1,4 @@
-# flutter_template
+# waseat
 
 A new Flutter project.
 

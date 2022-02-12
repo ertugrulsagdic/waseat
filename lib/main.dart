@@ -31,9 +31,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      // home: const LoginView(),
       debugShowCheckedModeBanner: false,
-      // theme: context.watch<ThemeNotifier>().currentTheme,
+      theme: context.watch<ThemeNotifier>().currentTheme,
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,
       locale: context.locale,

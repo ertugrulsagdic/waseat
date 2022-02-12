@@ -14,106 +14,132 @@ class AppThemeLight extends AppTheme {
   // ThemeData get theme => redTheme;
   @override
   ThemeData get theme => ThemeData(
-      fontFamily: AppConstants.FONT_FAMILY,
-      colorScheme: _appColorScheme,
-      textTheme: textTheme,
-      scaffoldBackgroundColor: _appColorScheme.background,
-      textButtonTheme: textButtonTheme,
-      inputDecorationTheme: InputDecorationTheme(
-        focusColor: _appColorScheme.secondary,
-        labelStyle: const TextStyle(),
-        contentPadding: const EdgeInsets.all(10),
-        filled: false,
-        enabledBorder: const OutlineInputBorder(
-          borderSide: BorderSide(
-            width: 0.3,
-          ),
+        fontFamily: AppConstants.FONT_FAMILY,
+        colorScheme: _appColorScheme,
+        textTheme: textTheme,
+        scaffoldBackgroundColor: _appColorScheme.background,
+        textButtonTheme: textButtonTheme,
+        elevatedButtonTheme: elevatedButtonTheme,
+        outlinedButtonTheme: outlinedButtonThemeData,
+        inputDecorationTheme: const InputDecorationTheme(
+          enabledBorder: UnderlineInputBorder(borderSide: BorderSide()),
+          disabledBorder: UnderlineInputBorder(),
+          focusedBorder: UnderlineInputBorder(),
+          contentPadding: EdgeInsets.all(0),
         ),
-        focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(
-            color: _appColorScheme.primaryVariant,
-          ),
+        appBarTheme: AppBarTheme(
+          titleSpacing: 0,
+          centerTitle: false,
+          color: _appColorScheme.surface,
+          titleTextStyle: textTheme.headline5,
+          elevation: 0,
         ),
-        focusedErrorBorder: OutlineInputBorder(
-          borderSide: BorderSide(
-            color: _appColorScheme.primaryVariant,
-          ),
+        floatingActionButtonTheme: FloatingActionButtonThemeData(
+          backgroundColor: _appColorScheme.primary,
         ),
-        errorBorder: OutlineInputBorder(
-          borderSide: BorderSide(
-            color: _appColorScheme.error,
-          ),
-        ),
-        errorStyle: textTheme.caption!.copyWith(
-          color: _appColorScheme.error,
-        ),
-      ),
-      appBarTheme: const AppBarTheme(
-        titleSpacing: 0,
-        centerTitle: false,
-        color: Colors.transparent,
-        elevation: 0,
-      ));
+      );
 
   TextButtonThemeData get textButtonTheme {
     return TextButtonThemeData(
       style: TextButton.styleFrom(
-        primary: _appColorScheme.surface,
-        backgroundColor: _appColorScheme.primary,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(5)),
-        ),
+        primary: _appColorScheme.primary,
         textStyle: textTheme.button,
-        elevation: 10,
-        shadowColor: const Color(0xFF9595BC),
       ),
     );
   }
 
+  ElevatedButtonThemeData get elevatedButtonTheme {
+    return ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+          elevation: 3,
+          primary: _appColorScheme.primary,
+          textStyle: textTheme.button),
+    );
+  }
+
+  OutlinedButtonThemeData get outlinedButtonThemeData =>
+      OutlinedButtonThemeData(
+        style: OutlinedButton.styleFrom(
+          primary: _appColorScheme.primary,
+          textStyle: textTheme.button,
+          side: const BorderSide(
+            width: 2,
+          ),
+        ),
+      );
+
   TextTheme get textTheme {
     return ThemeData.light().textTheme.copyWith(
+          headline1: TextStyle(
+            fontSize: 28,
+            fontWeight: FontWeight.bold,
+            color: _appColorScheme.primary,
+          ),
+          headline2: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            color: _appColorScheme.primary,
+          ),
+          headline3: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: _appColorScheme.primary,
+          ),
           headline4: TextStyle(
-            fontSize: 30,
-            fontWeight: FontWeight.w500,
-            letterSpacing: 0.25,
-            color: _appColorScheme.onSecondary,
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: _appColorScheme.primary,
           ),
-          bodyText1: const TextStyle(
+          headline5: TextStyle(
             fontSize: 16,
-            fontWeight: FontWeight.w400,
-            letterSpacing: 0.5,
+            fontWeight: FontWeight.bold,
+            color: _appColorScheme.primary,
           ),
-          subtitle2: const TextStyle(
+          headline6: TextStyle(
             fontSize: 14,
-            fontWeight: FontWeight.w400,
-            letterSpacing: 0.1,
+            fontWeight: FontWeight.bold,
+            color: _appColorScheme.primary,
+          ),
+          bodyText1: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+            color: _appColorScheme.background,
+          ),
+          subtitle2: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+            color: _appColorScheme.background,
+          ),
+          caption: TextStyle(
+            fontSize: 12,
+            fontWeight: FontWeight.bold,
+            color: _appColorScheme.primary,
           ),
           button: const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w500,
-            letterSpacing: 1.25,
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
           ),
-          caption: const TextStyle(
-            fontSize: 12,
-            fontWeight: FontWeight.w400,
-            letterSpacing: 0.4,
-          ),
+          overline: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w400,
+              color: _appColorScheme.onSecondary,
+              letterSpacing: 0.5),
         );
   }
 
   ColorScheme get _appColorScheme {
     return const ColorScheme(
-      primary: Color(0xFF274BDB),
-      primaryVariant: Color(0xFF598BFF),
-      secondary: Color(0xFF697690),
-      secondaryVariant: Color(0xFFB4BDCD),
+      primary: Color(0xFF0D1C2E),
+      primaryVariant: Color(0xFF5E6375),
+      secondary: Color(0xFF2B4BF2),
+      secondaryVariant: Color(0xFF03249D),
       surface: Colors.white,
-      background: Color(0xFFF7F9FC),
+      background: Color(0xFFF0F3F5),
       error: Color(0xFFEC002D),
-      onPrimary: Color(0xFF181A48),
-      onSecondary: Colors.black,
+      onPrimary: Color(0xFFE3E8FF),
+      onSecondary: Color(0xFF838F9C),
       onSurface: Color(0xFFEC7F00),
-      onBackground: Color(0xFF008156),
+      onBackground: Color(0xFF469E7B),
       onError: Color(0xFF00C382),
       brightness: Brightness.light,
     );

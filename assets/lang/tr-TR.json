@@ -1,4 +1,30 @@
 {
     "lorem": "Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod tempor",
-    "welcome": "Hoşgeldiniz"
+    "welcome": "Hoşgeldiniz",
+    "somethingwentwrong": "Bir şeyler ters gitti",
+    "footprint": {
+        "hello": "Merhaba",
+        "history": "@number adet geçmişiniz bulunmakta",
+        "totalSteps": "Toplam Adım",
+        "totalBalance": "Toplam Bakiye",
+        "today": "Bugün",
+        "week": "Bu Hafta",
+        "month": "Bu Ay"
+    },
+    "map": {
+        "whereto": "Nereye gidiyorsun?",
+        "allVehicles": "Araçları Filtrele",
+        "bike": "Motorsiklet",
+        "car": "Araba",
+        "transportation": "Toplu Taşıma",
+        "bicycle": "Bisiklet",
+        "scooter": "Skuter"
+    },
+    "findfootprint": {
+        "title": "Harita"
+    },
+    "button": {
+        "save": "Kaydet",
+        "otherOptions": "Diğer Seçenekler"
+    }
 }

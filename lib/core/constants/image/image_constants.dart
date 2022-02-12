@@ -8,6 +8,10 @@ class ImageConstants {
   /// example
   /// final example = 'example'.toPNG;
 
+  final logoColored = 'logo_colored'.toPNG;
+  final logoNameColored = 'logo_name_colored'.toPNG;
+  final logoNameWhite = 'logo_name_white'.toPNG;
+  final logoWhite = 'logo_white'.toPNG;
 }
 
 extension ImageConstantsExtension on String {

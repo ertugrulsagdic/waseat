@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kartal/kartal.dart';
+import 'package:waseat/core/constants/image/image_constants.dart';
 
 import '../../../../core/base/view/base_widget.dart';
 import '../viewmodel/splash_view_model.dart';
@@ -38,11 +39,12 @@ class _SplashViewState extends State<SplashView> with TickerProviderStateMixin {
       },
       onPageBuilder: (BuildContext context, SplashViewModel viewModel) =>
           Scaffold(
+        backgroundColor: context.colorScheme.secondary,
         body: Center(
           child: ScaleTransition(
             scale: _animation,
-            child: const FlutterLogo(
-              size: 150,
+            child: Image.asset(
+              ImageConstants.instance.logoNameWhite,
             ),
           ),
         ),

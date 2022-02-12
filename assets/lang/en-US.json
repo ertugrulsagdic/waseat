@@ -1,4 +1,30 @@
 {
     "lorem": "Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod tempor",
-    "welcome": "Welcome"
+    "welcome": "Welcome",
+    "somethingwentwrong": "Something went wrong",
+    "footprint": {
+        "hello": "Hello",
+        "history": "You have @number history",
+        "totalSteps": "Total Steps",
+        "totalBalance": "Total Balance",
+        "today": "Today",
+        "week": "Week",
+        "month": "Month"
+    },
+    "map": {
+        "whereto": "Where will you go?",
+        "allVehicles": "Filter vehicles",
+        "bike": "Bike",
+        "car": "Car",
+        "transportation": "Transportation",
+        "bicycle": "Bicycle",
+        "scooter": "Scooter"
+    },
+    "findfootprint": {
+        "title": "Map"
+    },
+    "button": {
+        "save": "Save",
+        "otherOptions": "View Other Routes"
+    }
 }
