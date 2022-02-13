@@ -2,6 +2,7 @@
     "lorem": "Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod tempor",
     "welcome": "Welcome",
     "somethingwentwrong": "Something went wrong",
+    "createAccountText": "Don’t have an account?",
     "footprint": {
         "hello": "Hello",
         "history": "You have @number history",
@@ -29,5 +30,24 @@
     "button": {
         "save": "Save",
         "otherOptions": "View Other Routes"
+    },
+    "Login": {
+        "forgotPassword": "Forgot password ?",
+        "signIn": "Sign in to continue with your account.",
+        "pleaseProvideEmail": "Please provide a valid email",
+        "fieldRequired": "This field required",
+        "passwordValidation": "Password should be 8 to 14 characters",
+        "createAccount": "Create Account"
+    },
+    "emailAddress": "Email Address",
+    "Input": {
+        "email": "Email",
+        "password": "Password"
+    },
+    "Button": {
+        "login": "Login"
     }
+
+
+
 }
