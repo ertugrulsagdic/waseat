@@ -19,7 +19,7 @@ abstract class _BottomTabViewModelBase with Store, BaseViewModel {
   void init() {}
 
   List<Widget> tabs = [
-    const FootPrintView(),
+    FootPrintView(),
     const EnterRouteMapView(),
     const GamificationView(),
     const ProfileView()
