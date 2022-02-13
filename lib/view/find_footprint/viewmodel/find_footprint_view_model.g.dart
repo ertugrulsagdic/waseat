@@ -40,6 +40,21 @@ mixin _$FindFootprintViewModel on _FindFootprintViewModelBase, Store {
     });
   }
 
+  final _$pageAtom = Atom(name: '_FindFootprintViewModelBase.page');
+
+  @override
+  int get page {
+    _$pageAtom.reportRead();
+    return super.page;
+  }
+
+  @override
+  set page(int value) {
+    _$pageAtom.reportWrite(value, super.page, () {
+      super.page = value;
+    });
+  }
+
   final _$currentPosiotonAtom =
       Atom(name: '_FindFootprintViewModelBase.currentPosioton');
 
@@ -75,6 +90,7 @@ mixin _$FindFootprintViewModel on _FindFootprintViewModelBase, Store {
     return '''
 isLoading: ${isLoading},
 selectedTab: ${selectedTab},
+page: ${page},
 currentPosioton: ${currentPosioton}
     ''';
   }

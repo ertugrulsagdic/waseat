@@ -8,17 +8,28 @@ import 'package:kartal/kartal.dart';
 import 'package:waseat/core/constants/image/svg_constants.dart';
 import 'package:waseat/core/constants/navigation/navigation_constants.dart';
 import 'package:waseat/core/init/lang/locale_keys.g.dart';
+import 'package:waseat/view/_product/auto_complete_search_input.dart';
 import 'package:waseat/view/_product/search_input.dart';
+import 'package:waseat/view/enter_route_map/model/enter_route_map_response_model.dart';
 import 'package:waseat/view/find_footprint/view/find_footprint_view.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 
 import '../../_product/enum/vehicle_enum.dart';
 
 import '../../../core/base/view/base_widget.dart';
 import '../viewmodel/enter_route_map_view_model.dart';
 
-class EnterRouteMapView extends StatelessWidget {
+class EnterRouteMapView extends StatefulWidget {
   const EnterRouteMapView({Key? key}) : super(key: key);
 
+  @override
+  State<EnterRouteMapView> createState() => _EnterRouteMapViewState();
+
+  static String _displayStringForOption(EnterRouteMapResponseModel option) =>
+      option.text;
+}
+
+class _EnterRouteMapViewState extends State<EnterRouteMapView> {
   @override
   Widget build(BuildContext context) {
     return BaseView<EnterRouteMapViewModel>(
@@ -77,7 +88,7 @@ class EnterRouteMapView extends StatelessWidget {
               viewModel.controller = controller,
           myLocationEnabled: true,
           compassEnabled: true,
-          trafficEnabled: true,
+          // trafficEnabled: true,
           myLocationButtonEnabled: false,
         );
       });
@@ -86,48 +97,122 @@ class EnterRouteMapView extends StatelessWidget {
   Widget _bottomBox(BuildContext context, EnterRouteMapViewModel viewModel) =>
       SizedBox(
         width: context.width,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          mainAxisSize: MainAxisSize.max,
+        child: Stack(
+          // mainAxisAlignment: MainAxisAlignment.start,
+          // mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            Padding(
-              padding:
-                  EdgeInsets.symmetric(vertical: context.dynamicWidth(0.025)),
-              child: Container(
-                constraints: BoxConstraints(
-                  maxWidth: context.dynamicWidth(0.2),
-                  maxHeight: context.dynamicWidth(0.015),
-                ),
-                decoration: BoxDecoration(
-                  color: Colors.grey[400],
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(context.dynamicWidth(1)),
-                  ),
-                ),
-              ),
-            ),
             // Konuma götür
             // Arama
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
               children: [
                 Padding(
                   padding: EdgeInsets.only(
                     left: context.normalValue,
                     right: context.normalValue,
-                    top: context.lowValue,
+                    top: context.mediumValue,
                   ),
-                  child: SearchInput(
-                    onTap: () {
-                      viewModel.navigation.navigateToPage(
-                          path: NavigationConstants.FIND_FOOTPRINT);
-                    },
-                    filterIcon: true,
-                    searchController: viewModel.searchController,
-                    onChanged: (value) {
-                      // viewModel.setSearchList(value);sd
-                    },
-                  ),
+                  child: Observer(builder: (_) {
+                    return Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Expanded(
+                          child: SizedBox(
+                            width: double.infinity,
+                            height: context.dynamicHeight(0.045),
+                            child: Observer(builder: (_) {
+                              // return TypeAheadField(
+                              //   textFieldConfiguration: TextFieldConfiguration(
+                              //     autofocus: true,
+                              //     style: DefaultTextStyle.of(context)
+                              //         .style
+                              //         .copyWith(fontStyle: FontStyle.italic),
+                              //     decoration: const InputDecoration(
+                              //         border: OutlineInputBorder()),
+                              //   ),
+                              //   suggestionsCallback: (pattern) async {
+                              //     return viewModel.getPlaces(pattern);
+                              //   },
+                              //   itemBuilder: (context,
+                              //       EnterRouteMapResponseModel suggestion) {
+                              //     return ListTile(
+                              //       leading: Icon(Icons.shopping_cart),
+                              //       title: Text(suggestion.text),
+                              //       // subtitle: Text('\$${suggestion['price']}'),
+                              //     );
+                              //   },
+                              //   onSuggestionSelected: (suggestion) {
+                              //     // Navigator.of(context).push(MaterialPageRoute(
+                              //     //     builder: (context) =>
+                              //     //         ProductPage(product: suggestion)));
+                              //   },
+                              // );
+
+                              return Autocomplete<EnterRouteMapResponseModel>(
+                                displayStringForOption:
+                                    EnterRouteMapView._displayStringForOption,
+                                optionsBuilder:
+                                    (TextEditingValue textEditingValue) {
+                                  Future.delayed(Duration.zero, () async {
+                                    await viewModel
+                                        .getPlaces(textEditingValue.text);
+                                    setState(() {});
+                                    return viewModel.places;
+                                  });
+                                  setState(() {});
+                                  return viewModel.places;
+                                  // if (textEditingValue.text == '') {
+                                  //   viewModel.places.clear();
+                                  // }
+                                  // return viewModel.placesString;
+                                },
+                                onSelected:
+                                    (EnterRouteMapResponseModel selection) {
+                                  viewModel.getCoordinates(selection.text);
+                                  debugPrint('You just selected $selection');
+                                },
+                              );
+                            }),
+                          ),
+                        ),
+                        SizedBox(width: context.dynamicWidth(0.02)),
+                        GestureDetector(
+                          onTap: () {
+                            viewModel.navigation.navigateToPage(
+                                path: NavigationConstants.FIND_FOOTPRINT);
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                                color: context.colorScheme.secondary,
+                                borderRadius: const BorderRadius.all(
+                                    Radius.circular(10))),
+                            width: context.dynamicWidth(0.1),
+                            height: context.dynamicWidth(0.1),
+                            child: SvgPicture.asset(
+                              SVGImageConstants.instance.check,
+                              color: context.colorScheme.surface,
+                              fit: BoxFit.scaleDown,
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                    // return AutoCompleteSearchInput(
+                    //   onTap: () {
+                    //     viewModel.navigation.navigateToPage(
+                    //         path: NavigationConstants.FIND_FOOTPRINT);
+                    //   },
+                    //   icon: true,
+                    //   onChanged: (value) {
+                    //     viewModel.getPlaces(value);
+                    //   },
+                    //   onSelected: (value) {
+                    //     viewModel.getCoordinates(value);
+                    //   },
+                    //   list: viewModel.placesString,
+                    // );
+                  }),
                 ),
                 SizedBox(height: context.normalValue),
                 Padding(
@@ -153,7 +238,7 @@ class EnterRouteMapView extends StatelessWidget {
                             children: [
                               Container(
                                 width: context.dynamicWidth(0.15),
-                                height: context.dynamicWidth(0.15),
+                                height: context.dynamicWidth(0.18),
                                 decoration: BoxDecoration(
                                   color: context.colorScheme.onPrimary,
                                   shape: BoxShape.circle,
@@ -166,13 +251,14 @@ class EnterRouteMapView extends StatelessWidget {
                               SizedBox(width: context.normalValue),
                               SizedBox(
                                 width: context.dynamicWidth(0.15),
-                                child: AutoSizeText(
+                                child: Text(
                                   viewModel.vehicles[index].name,
                                   style: context.textTheme.bodyText1!.copyWith(
                                     color: context.colorScheme.primaryVariant,
                                   ),
-                                  maxLines: 2,
                                   textAlign: TextAlign.center,
+                                  softWrap: false,
+                                  overflow: TextOverflow.fade,
                                 ),
                               ),
                             ],
@@ -181,8 +267,27 @@ class EnterRouteMapView extends StatelessWidget {
                       );
                     },
                   ),
-                )
+                ),
               ],
+            ),
+            Align(
+              alignment: Alignment.topCenter,
+              child: Padding(
+                padding:
+                    EdgeInsets.symmetric(vertical: context.dynamicWidth(0.025)),
+                child: Container(
+                  constraints: BoxConstraints(
+                    maxWidth: context.dynamicWidth(0.2),
+                    maxHeight: context.dynamicWidth(0.015),
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.grey[400],
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(context.dynamicWidth(1)),
+                    ),
+                  ),
+                ),
+              ),
             ),
           ],
         ),

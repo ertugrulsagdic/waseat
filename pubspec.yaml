@@ -50,6 +50,7 @@ dependencies:
   geolocator: ^8.1.1
   flutter_polyline_points: ^1.0.0
   flutter_google_places: ^0.3.0
+  flutter_typeahead: ^3.2.4
 
 dev_dependencies:
 

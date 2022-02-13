@@ -23,7 +23,7 @@ class VexanaManager {
         return status! < 500;
       },
       // TODO: Add url
-      baseUrl: 'https://oneri.io/api/',
+      baseUrl: 'https://flutter.istanbul/waseat/',
       // baseUrl: Platform.isAndroid ? _androidBaseUrl : _iosBaseUrl,
       headers: {'language': 'en'},
     ),

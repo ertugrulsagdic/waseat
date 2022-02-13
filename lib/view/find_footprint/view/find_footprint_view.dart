@@ -36,7 +36,9 @@ class FindFootprintView extends StatelessWidget {
         appBar: AppBar(
           leading: MaterialButton(
             onPressed: () {
-              Navigator.pop(context);
+              viewModel.page == 0
+                  ? Navigator.pop(context)
+                  : viewModel.changePage(0);
             },
             child: Icon(
               Icons.arrow_back,
@@ -65,15 +67,17 @@ class FindFootprintView extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               buildSearchArea(context, viewModel),
-              SizedBox(
-                height: context.height -
-                    context.dynamicHeight(0.23) -
-                    MediaQuery.of(context).padding.top -
-                    MediaQuery.of(context).padding.bottom,
+              Expanded(
                 child: PageView.builder(
-                  itemCount: 2,
+                  physics: const NeverScrollableScrollPhysics(),
+                  // onPageChanged: (int value) {
+                  //   viewModel.changePage(value);
+                  // },
+                  itemCount: pages.length,
                   itemBuilder: (context, index) {
-                    return pages[index];
+                    return Observer(builder: (_) {
+                      return pages[viewModel.page];
+                    });
                   },
                 ),
               ),
@@ -299,7 +303,6 @@ class FindFootprintView extends StatelessWidget {
           ),
           SizedBox(width: context.normalValue),
           Expanded(
-            flex: 1,
             child: SizedBox(
               height: context.mediumValue,
               child: const TextField(

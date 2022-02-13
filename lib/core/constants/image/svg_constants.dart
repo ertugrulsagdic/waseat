@@ -26,6 +26,7 @@ class SVGImageConstants {
   final scooter = 'scooter'.toSVG;
   // find footprint
   final switchRoute = 'switch'.toSVG;
+  final location = 'location'.toSVG;
 }
 
 extension SVGImageConstantsExtension on String {

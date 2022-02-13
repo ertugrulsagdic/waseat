@@ -21,6 +21,9 @@ abstract class  LocaleKeys {
   static const map_scooter = 'map.scooter';
   static const map = 'map';
   static const findfootprint_title = 'findfootprint.title';
+  static const findfootprint_routes = 'findfootprint.routes';
+  static const findfootprint_walking = 'findfootprint.walking';
+  static const findfootprint_transit = 'findfootprint.transit';
   static const findfootprint = 'findfootprint';
   static const button_save = 'button.save';
   static const button_otherOptions = 'button.otherOptions';

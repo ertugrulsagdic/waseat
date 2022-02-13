@@ -41,6 +41,21 @@ mixin _$EnterRouteMapViewModel on _EnterRouteMapViewModelBase, Store {
     });
   }
 
+  final _$placesAtom = Atom(name: '_EnterRouteMapViewModelBase.places');
+
+  @override
+  ObservableList<EnterRouteMapResponseModel> get places {
+    _$placesAtom.reportRead();
+    return super.places;
+  }
+
+  @override
+  set places(ObservableList<EnterRouteMapResponseModel> value) {
+    _$placesAtom.reportWrite(value, super.places, () {
+      super.places = value;
+    });
+  }
+
   final _$isLoadingAtom = Atom(name: '_EnterRouteMapViewModelBase.isLoading');
 
   @override
@@ -56,8 +71,27 @@ mixin _$EnterRouteMapViewModel on _EnterRouteMapViewModelBase, Store {
     });
   }
 
+  final _$getPlacesAsyncAction =
+      AsyncAction('_EnterRouteMapViewModelBase.getPlaces');
+
+  @override
+  Future<Iterable<dynamic>?> getPlaces(String text) {
+    return _$getPlacesAsyncAction.run(() => super.getPlaces(text));
+  }
+
   final _$_EnterRouteMapViewModelBaseActionController =
       ActionController(name: '_EnterRouteMapViewModelBase');
+
+  @override
+  ObservableList<EnterRouteMapResponseModel> returnList(String value) {
+    final _$actionInfo = _$_EnterRouteMapViewModelBaseActionController
+        .startAction(name: '_EnterRouteMapViewModelBase.returnList');
+    try {
+      return super.returnList(value);
+    } finally {
+      _$_EnterRouteMapViewModelBaseActionController.endAction(_$actionInfo);
+    }
+  }
 
   @override
   void isLoadingChange() {
@@ -75,6 +109,7 @@ mixin _$EnterRouteMapViewModel on _EnterRouteMapViewModelBase, Store {
     return '''
 currentPosioton: ${currentPosioton},
 polylineCoordinates: ${polylineCoordinates},
+places: ${places},
 isLoading: ${isLoading}
     ''';
   }

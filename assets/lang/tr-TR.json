@@ -21,7 +21,10 @@
         "scooter": "Skuter"
     },
     "findfootprint": {
-        "title": "Harita"
+        "title": "Harita",
+        "routes": "Diğer Seçenekler",
+        "walking": "Yürüme",
+        "transit": "Toplu Taşıma"
     },
     "button": {
         "save": "Kaydet",

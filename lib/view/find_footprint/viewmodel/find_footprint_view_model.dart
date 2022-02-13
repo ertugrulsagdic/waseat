@@ -43,6 +43,13 @@ abstract class _FindFootprintViewModelBase with Store, BaseViewModel {
     selectedTab = value;
   }
 
+  @observable
+  int page = 0;
+
+  void changePage(int value) {
+    page = value;
+  }
+
   List<SearchTabEnum> tabs = [
     SearchTabEnum.FOOT,
     SearchTabEnum.BIKE,

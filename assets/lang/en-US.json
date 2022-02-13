@@ -21,7 +21,10 @@
         "scooter": "Scooter"
     },
     "findfootprint": {
-        "title": "Map"
+        "title": "Map",
+        "routes": "Other Routes",
+        "walking": "Walk",
+        "transit": "Transportation"
     },
     "button": {
         "save": "Save",

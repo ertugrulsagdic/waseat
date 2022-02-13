@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kartal/kartal.dart';
 import 'package:mobx/mobx.dart';
+import 'package:waseat/core/constants/enums/preferences_keys_enum.dart';
 
 import '../../../../core/base/viewmodel/base_view_model.dart';
 import '../../../../core/constants/navigation/navigation_constants.dart';
@@ -26,6 +27,8 @@ abstract class _SplashViewModelBase with Store, BaseViewModel {
       LocaleManager.prefrencesInit(),
       DeviceUtility.instance.initPackageInfo()
     ]);
+    // TODO: change this after language change
+    await LocaleManager.instance.setStringValue(PreferencesKeys.LOCALE, 'en');
 
     await Future.delayed(context!.durationNormal);
     await Future.delayed(context!.durationNormal);

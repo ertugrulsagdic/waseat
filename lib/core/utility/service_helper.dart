@@ -1,6 +1,9 @@
 import 'dart:io';
 
 import 'package:easy_localization/src/public_ext.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:waseat/core/init/lang/language_manager.dart';
 import '../init/lang/locale_keys.g.dart';
 import 'package:vexana/vexana.dart';
 
@@ -26,7 +29,8 @@ abstract class ServiceHelper {
     if (token) {
       options = Options(headers: {
         'Authorization':
-            LocaleManager.instance.getStringValue(PreferencesKeys.TOKEN)
+            'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiIxIn0.MJDbW9MGmKm6AxwIZ5QNQdKmY4bu8h-G0fm3i6NoLzA'
+        // LocaleManager.instance.getStringValue(PreferencesKeys.TOKEN)
       });
     }
     // TODO: enctypt data if necessary

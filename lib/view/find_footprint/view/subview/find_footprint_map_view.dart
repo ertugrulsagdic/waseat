@@ -39,7 +39,7 @@ class FindFootprintMapView extends StatelessWidget {
                     viewModel.controller = controller,
                 myLocationEnabled: true,
                 compassEnabled: true,
-                trafficEnabled: true,
+                // trafficEnabled: true,
                 myLocationButtonEnabled: false,
               ),
             ),
@@ -78,103 +78,113 @@ class FindFootprintMapView extends StatelessWidget {
   Widget _bottomBox(BuildContext context, FindFootprintViewModel viewModel) =>
       SizedBox(
         width: context.width,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          mainAxisSize: MainAxisSize.max,
+        child: Stack(
           children: <Widget>[
-            Padding(
-              padding:
-                  EdgeInsets.symmetric(vertical: context.dynamicWidth(0.025)),
-              child: Container(
-                constraints: BoxConstraints(
-                  maxWidth: context.dynamicWidth(0.2),
-                  maxHeight: context.dynamicWidth(0.015),
-                ),
-                decoration: BoxDecoration(
-                  color: Colors.grey[400],
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(context.dynamicWidth(1)),
+            Column(
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(
+                    left: context.normalValue,
+                    right: context.normalValue,
+                    top: context.mediumValue,
                   ),
-                ),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(
-                left: context.normalValue,
-                right: context.normalValue,
-                top: context.lowValue,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  RichText(
-                    text: TextSpan(
-                      children: <TextSpan>[
-                        TextSpan(
-                          text: 5200.toString() + ' m. ',
-                          style: context.textTheme.headline3,
-                        ),
-                        // Get the username from sevice and show it here
-                        TextSpan(
-                          text: '(' + (5.2).toString() + ' km)',
-                          style: context.textTheme.headline3!
-                              .copyWith(color: context.colorScheme.onSecondary),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Row(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Container(
-                        width: context.dynamicWidth(0.11),
-                        height: context.dynamicWidth(0.11),
-                        decoration: BoxDecoration(
-                          color: context.colorScheme.onPrimary,
-                          shape: BoxShape.circle,
+                      RichText(
+                        text: TextSpan(
+                          children: <TextSpan>[
+                            TextSpan(
+                              text: 5200.toString() + ' m. ',
+                              style: context.textTheme.headline3,
+                            ),
+                            // Get the username from sevice and show it here
+                            TextSpan(
+                              text: '(' + (5.2).toString() + ' km)',
+                              style: context.textTheme.headline3!.copyWith(
+                                  color: context.colorScheme.onSecondary),
+                            ),
+                          ],
                         ),
-                        child: Observer(builder: (_) {
-                          return SizedBox(
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: SvgPicture.asset(
-                                viewModel.tabs[viewModel.selectedTab].index
-                                    .searchTabIcon,
-                                fit: BoxFit.scaleDown,
-                                color: context.colorScheme.secondary,
+                      ),
+                      Row(
+                        children: [
+                          Container(
+                            width: context.dynamicWidth(0.11),
+                            height: context.dynamicWidth(0.11),
+                            decoration: BoxDecoration(
+                              color: context.colorScheme.onPrimary,
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                color: context.colorScheme.surface,
+                                width: 2,
                               ),
                             ),
-                          );
-                        }),
-                      ),
-                      SizedBox(width: context.lowValue),
-                      Text(
-                        0.toString() + ' CO2',
-                        style: context.textTheme.headline3!
-                            .copyWith(color: context.colorScheme.onSecondary),
+                            child: Observer(builder: (_) {
+                              return SizedBox(
+                                child: Padding(
+                                  padding: context.paddingLow,
+                                  child: SvgPicture.asset(
+                                    viewModel.tabs[viewModel.selectedTab].index
+                                        .searchTabIcon,
+                                    fit: BoxFit.scaleDown,
+                                    color: context.colorScheme.secondary,
+                                  ),
+                                ),
+                              );
+                            }),
+                          ),
+                          SizedBox(width: context.lowValue),
+                          Text(
+                            0.toString() + ' CO2',
+                            style: context.textTheme.headline3!.copyWith(
+                                color: context.colorScheme.onSecondary),
+                          ),
+                        ],
                       ),
                     ],
                   ),
-                ],
+                ),
+                SizedBox(height: context.normalValue),
+                buildButton(
+                  context,
+                  onPressed: () {
+                    // TODO: send to backend
+                  },
+                  title: LocaleKeys.button_save.tr(),
+                  rounded: false,
+                ),
+                SizedBox(height: context.lowValue),
+                buildButton(
+                  context,
+                  onPressed: () {
+                    // TODO: view other options
+                    viewModel.changePage(1);
+                  },
+                  title: LocaleKeys.button_otherOptions.tr(),
+                  rounded: true,
+                ),
+              ],
+            ),
+            Align(
+              alignment: Alignment.topCenter,
+              child: Padding(
+                padding:
+                    EdgeInsets.symmetric(vertical: context.dynamicWidth(0.025)),
+                child: Container(
+                  constraints: BoxConstraints(
+                    maxWidth: context.dynamicWidth(0.2),
+                    maxHeight: context.dynamicWidth(0.015),
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.grey[400],
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(context.dynamicWidth(1)),
+                    ),
+                  ),
+                ),
               ),
             ),
-            SizedBox(height: context.normalValue),
-            buildButton(
-              context,
-              onPressed: () {
-                // TODO: send to backend
-              },
-              title: LocaleKeys.button_save.tr(),
-              rounded: false,
-            ),
-            SizedBox(height: context.lowValue),
-            buildButton(
-              context,
-              onPressed: () {
-                // TODO: view other options
-              },
-              title: LocaleKeys.button_otherOptions.tr(),
-              rounded: true,
-            )
           ],
         ),
       );

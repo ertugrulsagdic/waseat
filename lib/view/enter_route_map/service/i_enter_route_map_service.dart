@@ -7,5 +7,6 @@ abstract class IEnterRouteMapService {
 
   IEnterRouteMapService(this.manager);
 
-  Future<BaseResponseModel?> fetchPlace();
+  Future<BaseResponseModel?> fetchPlace(String text);
+  Future<BaseResponseModel?> fetchCoordinate(String place_id);
 }

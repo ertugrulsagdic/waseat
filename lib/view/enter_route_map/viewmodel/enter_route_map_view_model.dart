@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
@@ -7,7 +8,11 @@ import 'package:mobx/mobx.dart';
 import 'package:waseat/core/base/viewmodel/base_view_model.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:waseat/core/utility/thorottle_helper.dart';
 import 'package:waseat/view/_product/enum/vehicle_enum.dart';
+import 'package:waseat/view/enter_route_map/model/enter_route_map_response_model.dart';
+import 'package:waseat/view/enter_route_map/service/enter_route_map_service.dart';
+import 'package:waseat/view/enter_route_map/service/i_enter_route_map_service.dart';
 import 'package:waseat/view/find_footprint/view/subview/find_footprint_list_view.dart';
 import 'package:waseat/view/find_footprint/view/subview/find_footprint_map_view.dart';
 
@@ -37,8 +42,12 @@ abstract class _EnterRouteMapViewModelBase with Store, BaseViewModel {
   @override
   void setContext(BuildContext context) => this.context = context;
 
+  late IEnterRouteMapService enterRouteMapService;
+  late ThrottleStringHelper _throttleHelper;
+
   @override
   void init() async {
+    enterRouteMapService = EnterRouteMapService(vexanaManager.networkManager);
     WidgetsBinding.instance!.addPostFrameCallback((_) async {
       currentPosioton = await getCurrentLatLng();
       controller.animateCamera(
@@ -50,6 +59,48 @@ abstract class _EnterRouteMapViewModelBase with Store, BaseViewModel {
     markers = {};
     polylines = {};
     searchController = TextEditingController();
+    _throttleHelper = ThrottleStringHelper();
+  }
+
+  @observable
+  ObservableList<EnterRouteMapResponseModel> places = ObservableList.of([]);
+
+  @action
+  Future<Iterable?> getPlaces(String text) async {
+    if (text.isNotEmpty) {
+      _throttleHelper.onDelayTouch(text, (text) async {
+        if (text!.isNotEmpty) {
+          places.clear();
+          return await enterRouteMapService.fetchPlace(text);
+        }
+      });
+    }
+  }
+
+  @action
+  ObservableList<EnterRouteMapResponseModel> returnList(String value) {
+    getPlaces(value);
+    if (value == '') {
+      places.clear();
+    }
+    // return viewModel.placesString;
+    inspect(places);
+    return places;
+  }
+
+  Future<void> getCoordinates(String selectedString) async {
+    await getPlaces(selectedString);
+    inspect(places);
+    EnterRouteMapResponseModel selected =
+        places.firstWhere((EnterRouteMapResponseModel option) {
+      return option.text.contains(selectedString);
+    });
+    final response = await enterRouteMapService.fetchPlace(selected.placeId!);
+    if (response!.type == true) {
+      inspect(places);
+    } else {
+      showMessage(response);
+    }
   }
 
   @observable

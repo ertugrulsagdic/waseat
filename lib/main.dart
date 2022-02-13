@@ -1,6 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:waseat/core/constants/enums/preferences_keys_enum.dart';
+import 'package:waseat/core/init/cache/locale_manager.dart';
 
 import 'core/constants/app/app_constants.dart';
 import 'core/init/lang/language_manager.dart';
