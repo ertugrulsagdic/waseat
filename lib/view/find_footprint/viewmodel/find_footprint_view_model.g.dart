@@ -162,6 +162,52 @@ mixin _$FindFootprintViewModel on _FindFootprintViewModelBase, Store {
     });
   }
 
+  final _$routeInfoAtom = Atom(name: '_FindFootprintViewModelBase.routeInfo');
+
+  @override
+  FindFootprintRouteResponseModel get routeInfo {
+    _$routeInfoAtom.reportRead();
+    return super.routeInfo;
+  }
+
+  @override
+  set routeInfo(FindFootprintRouteResponseModel value) {
+    _$routeInfoAtom.reportWrite(value, super.routeInfo, () {
+      super.routeInfo = value;
+    });
+  }
+
+  final _$polylinesAtom = Atom(name: '_FindFootprintViewModelBase.polylines');
+
+  @override
+  ObservableMap<PolylineId, Polyline> get polylines {
+    _$polylinesAtom.reportRead();
+    return super.polylines;
+  }
+
+  @override
+  set polylines(ObservableMap<PolylineId, Polyline> value) {
+    _$polylinesAtom.reportWrite(value, super.polylines, () {
+      super.polylines = value;
+    });
+  }
+
+  final _$polylineCoordinatesAtom =
+      Atom(name: '_FindFootprintViewModelBase.polylineCoordinates');
+
+  @override
+  ObservableList<LatLng> get polylineCoordinates {
+    _$polylineCoordinatesAtom.reportRead();
+    return super.polylineCoordinates;
+  }
+
+  @override
+  set polylineCoordinates(ObservableList<LatLng> value) {
+    _$polylineCoordinatesAtom.reportWrite(value, super.polylineCoordinates, () {
+      super.polylineCoordinates = value;
+    });
+  }
+
   final _$getPlacesAsyncAction =
       AsyncAction('_FindFootprintViewModelBase.getPlaces');
 
@@ -196,7 +242,10 @@ selectedTab: ${selectedTab},
 page: ${page},
 toPlaces: ${toPlaces},
 toMarker: ${toMarker},
-fromMarker: ${fromMarker}
+fromMarker: ${fromMarker},
+routeInfo: ${routeInfo},
+polylines: ${polylines},
+polylineCoordinates: ${polylineCoordinates}
     ''';
   }
 }

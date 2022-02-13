@@ -40,22 +40,6 @@ mixin _$EnterRouteMapViewModel on _EnterRouteMapViewModelBase, Store {
     });
   }
 
-  final _$polylineCoordinatesAtom =
-      Atom(name: '_EnterRouteMapViewModelBase.polylineCoordinates');
-
-  @override
-  ObservableList<LatLng> get polylineCoordinates {
-    _$polylineCoordinatesAtom.reportRead();
-    return super.polylineCoordinates;
-  }
-
-  @override
-  set polylineCoordinates(ObservableList<LatLng> value) {
-    _$polylineCoordinatesAtom.reportWrite(value, super.polylineCoordinates, () {
-      super.polylineCoordinates = value;
-    });
-  }
-
   final _$toPosiotonAtom = Atom(name: '_EnterRouteMapViewModelBase.toPosioton');
 
   @override
@@ -206,7 +190,6 @@ mixin _$EnterRouteMapViewModel on _EnterRouteMapViewModelBase, Store {
     return '''
 markers: ${markers},
 currentPosioton: ${currentPosioton},
-polylineCoordinates: ${polylineCoordinates},
 toPosioton: ${toPosioton},
 currentPosition: ${currentPosition},
 fromPosition: ${fromPosition},

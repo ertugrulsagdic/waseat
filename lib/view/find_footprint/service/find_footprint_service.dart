@@ -6,6 +6,8 @@ import 'package:waseat/view/find_footprint/model/find_footprint_coordinate_model
 import 'package:waseat/view/find_footprint/model/find_footprint_coordinate_response_model.dart';
 import 'package:waseat/view/find_footprint/model/find_footprint_model.dart';
 import 'package:waseat/view/find_footprint/model/find_footprint_response_model.dart';
+import 'package:waseat/view/find_footprint/model/find_footprint_route_model.dart';
+import 'package:waseat/view/find_footprint/model/find_footprint_route_response_model.dart';
 
 import '../../../core/constants/network/network_route_enum.dart';
 import 'package:vexana/vexana.dart';
@@ -38,6 +40,21 @@ class FindFootprintService extends IFindFootprintService with ServiceHelper {
       dataModel: FindFootPrintCoordinateModel(placeId: place_id),
       dataParser: FindFootPrintCoordinateResponseModel(),
     );
+    return result;
+  }
+
+  @override
+  Future<BaseResponseModel?> fetchRoutes(FindFootprintRouteModel model) async {
+    final result = await requestJson(
+      manager,
+      NetworkRoutes.GET_ROUTE,
+      RequestType.POST,
+      dataModel: model,
+      dataParser: FindFootprintRouteResponseModel(),
+    );
+    print(model.toJson());
+    print('model.toJson()');
+    print(result);
     return result;
   }
 }

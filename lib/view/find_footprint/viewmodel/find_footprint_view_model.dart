@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mobx/mobx.dart';
@@ -8,6 +9,8 @@ import 'package:waseat/core/base/viewmodel/base_view_model.dart';
 import 'package:waseat/view/_product/enum/search_tab_enum.dart';
 import 'package:waseat/view/enter_route_map/model/enter_route_map_coordinate_response_model.dart';
 import 'package:waseat/view/find_footprint/model/find_footprint_response_model.dart';
+import 'package:waseat/view/find_footprint/model/find_footprint_route_model.dart';
+import 'package:waseat/view/find_footprint/model/find_footprint_route_response_model.dart';
 import 'package:waseat/view/find_footprint/service/find_footprint_service.dart';
 import 'package:waseat/view/find_footprint/service/i_find_footprint_service.dart';
 import 'package:waseat/view/find_footprint/view/subview/find_footprint_map_view.dart';
@@ -64,7 +67,6 @@ abstract class _FindFootprintViewModelBase with Store, BaseViewModel {
         fromPosition = await getCurrentLatLng();
 
         toController.text = coordinateModel.address!;
-        fromController.text = 'My Location';
 
         fromMarker = Marker(
           markerId: const MarkerId('myLocation'),
@@ -74,6 +76,8 @@ abstract class _FindFootprintViewModelBase with Store, BaseViewModel {
             // _onMarkerTapped(markerId);
           },
         );
+        await getRoutes();
+        getPolyline();
       } else {
         fromPosition = await getCurrentLatLng();
 
@@ -94,6 +98,33 @@ abstract class _FindFootprintViewModelBase with Store, BaseViewModel {
     });
   }
 
+  void swapLocations() {
+    String temp = fromController.text;
+    fromController.text = toController.text;
+    toController.text = temp;
+
+    Marker tempMarker = fromMarker;
+    fromMarker = toMarker;
+    toMarker = tempMarker;
+
+    markers = ObservableMap.of({
+      fromMarker.markerId: fromMarker,
+      toMarker.markerId: toMarker,
+    });
+
+    LatLng tempPos = toPosioton;
+    toPosioton = fromPosition;
+    fromPosition = tempPos;
+
+    controller.animateCamera(
+      CameraUpdate.newCameraPosition(
+        CameraPosition(target: toPosioton, zoom: 15),
+      ),
+    );
+
+    getPolyline();
+  }
+
   @observable
   bool isLoading = false;
 
@@ -107,6 +138,7 @@ abstract class _FindFootprintViewModelBase with Store, BaseViewModel {
 
   void changeSelectedTab(int value) {
     selectedTab = value;
+    getPolyline();
   }
 
   @observable
@@ -240,10 +272,17 @@ abstract class _FindFootprintViewModelBase with Store, BaseViewModel {
         );
       }
 
+      fromPosition =
+          isFrom ? LatLng(response.data.lat, response.data.lng) : fromPosition;
+      toPosioton =
+          !isFrom ? LatLng(response.data.lat, response.data.lng) : toPosioton;
+
       markers = ObservableMap.of({
         fromMarker.markerId: fromMarker,
         toMarker.markerId: toMarker,
       });
+      await getRoutes();
+      getPolyline();
 
       controller.animateCamera(
         CameraUpdate.newCameraPosition(
@@ -254,5 +293,56 @@ abstract class _FindFootprintViewModelBase with Store, BaseViewModel {
         ),
       );
     }
+  }
+
+  @observable
+  FindFootprintRouteResponseModel routeInfo = FindFootprintRouteResponseModel();
+
+  Future<void> getRoutes() async {
+    final response = await footprintService.fetchRoutes(
+      FindFootprintRouteModel(
+        from: '${fromPosition.latitude},${fromPosition.longitude}',
+        to: '${toPosioton.latitude},${toPosioton.longitude}',
+      ),
+    );
+    if (response!.type == true) {
+      routeInfo = response.data;
+    } else {
+      showMessage(response);
+    }
+    inspect(response);
+  }
+
+  @observable
+  ObservableMap<PolylineId, Polyline> polylines = ObservableMap.of({});
+
+  @observable
+  ObservableList<LatLng> polylineCoordinates = ObservableList.of([]);
+
+  void addPolyLine() {
+    PolylineId id = const PolylineId("poly");
+    Polyline polyline = Polyline(
+        polylineId: id, color: Colors.red, points: polylineCoordinates);
+    polylines[id] = polyline;
+  }
+
+  PolylinePoints polylinePoints = PolylinePoints();
+  String googleAPiKey = "AIzaSyBnYhemLkubciMG_ehstxBtdW7sf8Lzic0";
+
+  void getPolyline() async {
+    polylineCoordinates = ObservableList.of([]);
+    PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
+      googleAPiKey,
+      PointLatLng(fromPosition.latitude, fromPosition.longitude),
+      PointLatLng(toPosioton.latitude, toPosioton.longitude),
+      travelMode: selectedTab.travelMode,
+      // wayPoints: [PolylineWayPoint(location: "Sabo, Yaba Lagos Nigeria")],
+    );
+    if (result.points.isNotEmpty) {
+      for (var point in result.points) {
+        polylineCoordinates.add(LatLng(point.latitude, point.longitude));
+      }
+    }
+    addPolyLine();
   }
 }

@@ -1,6 +1,7 @@
 // ignore_for_file: constant_identifier_names
 
 import 'package:easy_localization/src/public_ext.dart';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:waseat/core/constants/image/svg_constants.dart';
 import 'package:waseat/core/init/lang/locale_keys.g.dart';
 
@@ -28,6 +29,48 @@ extension VehicleEnumIndexToIcon on int {
         return SVGImageConstants.instance.bicycle;
       case 5:
         return SVGImageConstants.instance.scooter;
+      default:
+        throw Exception('No statu found!');
+    }
+  }
+}
+
+// extension VehicleToTravelMode on int {
+//   String get dataKey {
+//     switch (this) {
+//       case 0:
+//         return 'walking';
+//       case 1:
+//         return '';
+//       case 2:
+//         return TravelMode.driving;
+//       case 3:
+//         return TravelMode.transit;
+//       case 4:
+//         return TravelMode.bicycling;
+//       case 5:
+//         return TravelMode.driving;
+//       default:
+//         throw Exception('No statu found!');
+//     }
+//   }
+// }
+
+extension VehicleToTravelMode on int {
+  TravelMode get travelMode {
+    switch (this) {
+      case 0:
+        return TravelMode.walking;
+      case 1:
+        return TravelMode.driving;
+      case 2:
+        return TravelMode.driving;
+      case 3:
+        return TravelMode.transit;
+      case 4:
+        return TravelMode.bicycling;
+      case 5:
+        return TravelMode.driving;
       default:
         throw Exception('No statu found!');
     }

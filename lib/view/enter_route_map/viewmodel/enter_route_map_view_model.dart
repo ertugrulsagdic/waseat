@@ -28,20 +28,10 @@ abstract class _EnterRouteMapViewModelBase with Store, BaseViewModel {
   @observable
   ObservableMap<MarkerId, Marker> markers = ObservableMap.of({});
 
-  late Map<PolylineId, Polyline> polylines;
-  PolylinePoints polylinePoints = PolylinePoints();
-  String googleAPiKey = "AIzaSyBnYhemLkubciMG_ehstxBtdW7sf8Lzic0";
-
   TextEditingController? searchController;
 
   @observable
   LatLng currentPosioton = const LatLng(0, 0);
-
-  double _originLatitude = 26.48424, _originLongitude = 50.04551;
-  double _destLatitude = 26.46423, _destLongitude = 50.06358;
-
-  @observable
-  ObservableList<LatLng> polylineCoordinates = ObservableList.of([]);
 
   @override
   void setContext(BuildContext context) => this.context = context;
@@ -79,7 +69,6 @@ abstract class _EnterRouteMapViewModelBase with Store, BaseViewModel {
         ),
       );
     });
-    polylines = {};
     searchController = TextEditingController();
     _throttleHelper = ThrottleStringHelper();
   }
@@ -211,26 +200,4 @@ abstract class _EnterRouteMapViewModelBase with Store, BaseViewModel {
     VehicleEnum.BICYCLE,
     VehicleEnum.SCOOTER,
   ];
-
-  void addPolyLine() {
-    PolylineId id = const PolylineId("poly");
-    Polyline polyline = Polyline(
-        polylineId: id, color: Colors.red, points: polylineCoordinates);
-    polylines[id] = polyline;
-  }
-
-  void getPolyline() async {
-    PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
-        googleAPiKey,
-        PointLatLng(_originLatitude, _originLongitude),
-        PointLatLng(_destLatitude, _destLongitude),
-        travelMode: TravelMode.driving,
-        wayPoints: [PolylineWayPoint(location: "Sabo, Yaba Lagos Nigeria")]);
-    if (result.points.isNotEmpty) {
-      for (var point in result.points) {
-        polylineCoordinates.add(LatLng(point.latitude, point.longitude));
-      }
-    }
-    addPolyLine();
-  }
 }

@@ -28,7 +28,7 @@ class FindFootprintMapView extends StatelessWidget {
               height: context.dynamicHeight(0.35),
               child: Observer(builder: (_) {
                 return GoogleMap(
-                  // polylines: Set<Polyline>.of(viewModel.polylines.values),
+                  polylines: Set<Polyline>.of(viewModel.polylines.values),
                   mapType: MapType.normal,
                   initialCameraPosition: CameraPosition(
                     target: viewModel.fromPosition,

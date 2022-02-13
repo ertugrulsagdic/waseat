@@ -216,7 +216,7 @@ class FindFootprintView extends StatelessWidget {
                   // üst
                   _searchTop(context, viewModel),
                   // orta
-                  _searchCenter(context),
+                  _searchCenter(context, viewModel),
                   // alt
                   _searchBottom(context, viewModel),
                 ],
@@ -244,13 +244,20 @@ class FindFootprintView extends StatelessWidget {
           Expanded(
             child: SizedBox(
               height: context.mediumValue,
-              child: buildAutoCompleteInput(context, viewModel, true),
+              child: buildAutoCompleteInput(
+                context,
+                viewModel,
+                true,
+                viewModel.fromController,
+              ),
             ),
           ),
         ],
       );
   // Arama kutusunun orta kısmı
-  Widget _searchCenter(BuildContext context) => Row(
+  Widget _searchCenter(
+          BuildContext context, FindFootprintViewModel viewModel) =>
+      Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           const SizedBox(
@@ -282,7 +289,7 @@ class FindFootprintView extends StatelessWidget {
                 SVGImageConstants.instance.switchRoute,
               ),
             ),
-            onTap: () => print('clicked!'),
+            onTap: () => viewModel.swapLocations(),
           ),
         ],
       );
@@ -306,25 +313,42 @@ class FindFootprintView extends StatelessWidget {
           Expanded(
             child: SizedBox(
                 height: context.mediumValue,
-                child: buildAutoCompleteInput(context, viewModel, false)),
+                child: Align(
+                  alignment: Alignment.topCenter,
+                  child: buildAutoCompleteInput(
+                    context,
+                    viewModel,
+                    false,
+                    viewModel.toController,
+                  ),
+                )),
           ),
         ],
       );
 
   Widget buildAutoCompleteInput(
-      BuildContext context, FindFootprintViewModel viewModel, bool isFrom) {
+      BuildContext context,
+      FindFootprintViewModel viewModel,
+      bool isFrom,
+      TextEditingController controller) {
     return SizedBox(
       width: double.infinity,
-      height: context.dynamicHeight(0.045),
       child: TypeAheadField(
         textFieldConfiguration: TextFieldConfiguration(
+          textAlign: TextAlign.justify,
+          controller: controller,
           autofocus: false,
           style: context.textTheme.headline6,
-          decoration: const InputDecoration(
+          decoration: InputDecoration(
+            contentPadding: EdgeInsets.only(
+              bottom:
+                  isFrom ? context.normalValue / 1.5 : context.lowValue / 0.5,
+            ),
             border: InputBorder.none,
             focusedBorder: InputBorder.none,
             disabledBorder: InputBorder.none,
             enabledBorder: InputBorder.none,
+            hintText: 'My Location',
           ),
         ),
         suggestionsCallback: (pattern) async {
