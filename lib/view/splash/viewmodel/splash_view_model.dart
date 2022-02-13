@@ -32,8 +32,9 @@ abstract class _SplashViewModelBase with Store, BaseViewModel {
 
     await Future.delayed(context!.durationNormal);
     await Future.delayed(context!.durationNormal);
-
-    // TODO: change the navigation root
-    await navigation.navigateToPageClear(path: NavigationConstants.BOTTOMTAB);
+    if (localeManager.getStringValue(PreferencesKeys.TOKEN).isEmpty){
+      await navigation.navigateToPageClear(path: NavigationConstants.LOGIN);
+    }
+    else {await navigation.navigateToPageClear(path: NavigationConstants.LOGIN);}
   }
 }

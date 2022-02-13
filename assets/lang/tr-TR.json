@@ -2,6 +2,7 @@
     "lorem": "Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod tempor",
     "welcome": "Hoşgeldiniz",
     "somethingwentwrong": "Bir şeyler ters gitti",
+    "createAccountText": "Hesabınız var mı?",
     "footprint": {
         "hello": "Merhaba",
         "history": "@number adet geçmişiniz bulunmakta",
@@ -29,5 +30,23 @@
     "button": {
         "save": "Kaydet",
         "otherOptions": "Diğer Seçenekler"
+    },
+    "Login": {
+        "forgotPassword": "Şifremi unuttum ?",
+        "signIn": "Hesabın ile devam etmek için giriş yapın.",
+        "pleaseProvideEmail": "Lütfen geçerli bir e-posta giriniz",
+        "fieldRequired": "Bu alan geçerli",
+        "passwordValidation": "Şifre 8 ile 14 karakter arasında olmalıdır.",
+        "createAccount": "Hesap Oluştur"
+    },
+    "emailAddress": "Email Adresi",
+    "Input": {
+        "email": "Email",
+        "password": "Şifre"
+    },
+    "Button": {
+        "login": "Giriş Yap"
     }
+
+    
 }

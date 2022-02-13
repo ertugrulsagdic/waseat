@@ -4,4 +4,6 @@ class NavigationConstants {
   static const DEFAULT = '/';
   static const BOTTOMTAB = '/bottomtab';
   static const FIND_FOOTPRINT = '/findfootprint';
+  static const LOGIN = '/login';
+  static const SIGNIN = '/signin';
 }
