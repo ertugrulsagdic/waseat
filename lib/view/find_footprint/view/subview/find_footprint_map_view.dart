@@ -26,22 +26,33 @@ class FindFootprintMapView extends StatelessWidget {
           children: [
             SizedBox(
               height: context.dynamicHeight(0.35),
-              child: GoogleMap(
-                // polylines: Set<Polyline>.of(viewModel.polylines.values),
-                mapType: MapType.normal,
-                initialCameraPosition: CameraPosition(
-                  target: viewModel.currentPosioton,
-                  zoom: 5,
-                ),
-                // markers: Set<Marker>.of(viewModel.markers!.values),
-                zoomGesturesEnabled: true,
-                onMapCreated: (GoogleMapController controller) =>
-                    viewModel.controller = controller,
-                myLocationEnabled: true,
-                compassEnabled: true,
-                // trafficEnabled: true,
-                myLocationButtonEnabled: false,
-              ),
+              child: Observer(builder: (_) {
+                return GoogleMap(
+                  // polylines: Set<Polyline>.of(viewModel.polylines.values),
+                  mapType: MapType.normal,
+                  initialCameraPosition: CameraPosition(
+                    target: viewModel.fromPosition,
+                    zoom: 5,
+                  ),
+                  markers: Set<Marker>.of(viewModel.markers.values),
+                  zoomGesturesEnabled: true,
+                  onMapCreated: (GoogleMapController controller) {
+                    viewModel.controller = controller;
+                    controller.animateCamera(
+                      CameraUpdate.newCameraPosition(
+                        CameraPosition(
+                          target: viewModel.toPosioton,
+                          zoom: 15,
+                        ),
+                      ),
+                    );
+                  },
+                  myLocationEnabled: true,
+                  compassEnabled: true,
+                  // trafficEnabled: true,
+                  myLocationButtonEnabled: false,
+                );
+              }),
             ),
             Align(
               alignment: Alignment.bottomCenter,

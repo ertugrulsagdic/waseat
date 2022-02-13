@@ -5,8 +5,8 @@ part 'enter_route_map_coordinate_response_model.g.dart';
 @JsonSerializable()
 class EnterRouteMapCoordinateResponseModel
     extends INetworkModel<EnterRouteMapCoordinateResponseModel> {
-  int? lat;
-  int? lng;
+  double? lat;
+  double? lng;
   String? address;
 
   EnterRouteMapCoordinateResponseModel({this.lat, this.lng, this.address});

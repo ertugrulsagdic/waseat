@@ -12,6 +12,8 @@ class ImageConstants {
   final logoNameColored = 'logo_name_colored'.toPNG;
   final logoNameWhite = 'logo_name_white'.toPNG;
   final logoWhite = 'logo_white'.toPNG;
+  final homeBackground = 'home_background'.toPNG;
+  final background = 'background'.toPNG;
 }
 
 extension ImageConstantsExtension on String {

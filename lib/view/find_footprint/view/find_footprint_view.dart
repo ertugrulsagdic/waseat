@@ -3,11 +3,13 @@ import 'package:easy_localization/src/public_ext.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:kartal/kartal.dart';
 import 'package:waseat/core/constants/image/svg_constants.dart';
 import 'package:waseat/core/init/lang/locale_keys.g.dart';
 import 'package:waseat/view/_product/enum/search_tab_enum.dart';
+import 'package:waseat/view/enter_route_map/model/enter_route_map_coordinate_response_model.dart';
 import 'package:waseat/view/find_footprint/view/subview/find_footprint_list_view.dart';
 import 'package:waseat/view/find_footprint/view/subview/find_footprint_map_view.dart';
 
@@ -15,14 +17,16 @@ import '../../../core/base/view/base_widget.dart';
 import '../viewmodel/find_footprint_view_model.dart';
 
 class FindFootprintView extends StatelessWidget {
-  FindFootprintView({Key? key}) : super(key: key);
+  final EnterRouteMapCoordinateResponseModel coordinateModel;
+  FindFootprintView({Key? key, required this.coordinateModel})
+      : super(key: key);
 
   List<Widget> pages = [];
 
   @override
   Widget build(BuildContext context) {
     return BaseView<FindFootprintViewModel>(
-      viewModel: FindFootprintViewModel(),
+      viewModel: FindFootprintViewModel(coordinateModel),
       onModelReady: (model) {
         model.setContext(context);
         model.init();
@@ -107,7 +111,8 @@ class FindFootprintView extends StatelessWidget {
           searchBox(context, viewModel),
           SizedBox(height: context.lowValue),
           Container(
-            padding: EdgeInsets.only(left: context.lowValue),
+            padding: EdgeInsets.only(
+                left: context.lowValue, bottom: context.lowValue),
             height: context.dynamicWidth(0.12),
             child: ListView.builder(
               shrinkWrap: true,
@@ -209,11 +214,11 @@ class FindFootprintView extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   // üst
-                  _searchTop(context),
+                  _searchTop(context, viewModel),
                   // orta
                   _searchCenter(context),
                   // alt
-                  _searchBottom(context),
+                  _searchBottom(context, viewModel),
                 ],
               ),
             ),
@@ -223,7 +228,8 @@ class FindFootprintView extends StatelessWidget {
       );
 
   // Arama kutusunun üst kısmı
-  Widget _searchTop(BuildContext context) => Row(
+  Widget _searchTop(BuildContext context, FindFootprintViewModel viewModel) =>
+      Row(
         children: <Widget>[
           SizedBox(
             width: 20,
@@ -238,14 +244,7 @@ class FindFootprintView extends StatelessWidget {
           Expanded(
             child: SizedBox(
               height: context.mediumValue,
-              child: const TextField(
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  focusedBorder: InputBorder.none,
-                  disabledBorder: InputBorder.none,
-                  enabledBorder: InputBorder.none,
-                ),
-              ),
+              child: buildAutoCompleteInput(context, viewModel, true),
             ),
           ),
         ],
@@ -289,7 +288,9 @@ class FindFootprintView extends StatelessWidget {
       );
 
   // Aram kutusunun alt kısmı
-  Widget _searchBottom(BuildContext context) => Row(
+  Widget _searchBottom(
+          BuildContext context, FindFootprintViewModel viewModel) =>
+      Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           SizedBox(
@@ -304,17 +305,40 @@ class FindFootprintView extends StatelessWidget {
           SizedBox(width: context.normalValue),
           Expanded(
             child: SizedBox(
-              height: context.mediumValue,
-              child: const TextField(
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  focusedBorder: InputBorder.none,
-                  disabledBorder: InputBorder.none,
-                  enabledBorder: InputBorder.none,
-                ),
-              ),
-            ),
+                height: context.mediumValue,
+                child: buildAutoCompleteInput(context, viewModel, false)),
           ),
         ],
       );
+
+  Widget buildAutoCompleteInput(
+      BuildContext context, FindFootprintViewModel viewModel, bool isFrom) {
+    return SizedBox(
+      width: double.infinity,
+      height: context.dynamicHeight(0.045),
+      child: TypeAheadField(
+        textFieldConfiguration: TextFieldConfiguration(
+          autofocus: false,
+          style: context.textTheme.headline6,
+          decoration: const InputDecoration(
+            border: InputBorder.none,
+            focusedBorder: InputBorder.none,
+            disabledBorder: InputBorder.none,
+            enabledBorder: InputBorder.none,
+          ),
+        ),
+        suggestionsCallback: (pattern) async {
+          return await viewModel.getPlaces(pattern, isFrom);
+        },
+        itemBuilder: (context, suggestion) {
+          return ListTile(
+            title: Text(suggestion.toString()),
+          );
+        },
+        onSuggestionSelected: (String suggestion) {
+          viewModel.getCoordinates(suggestion, isFrom);
+        },
+      ),
+    );
+  }
 }

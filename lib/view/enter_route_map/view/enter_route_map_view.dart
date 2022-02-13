@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:developer';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_localization/src/public_ext.dart';
 import 'package:flutter/material.dart';
@@ -60,7 +63,7 @@ class _EnterRouteMapViewState extends State<EnterRouteMapView> {
                       ),
                       color: context.colorScheme.surface,
                     ),
-                    height: context.dynamicHeight(0.3),
+                    // height: context.dynamicHeight(0.32),
                     child: _bottomBox(context, viewModel),
                   ),
                 ],
@@ -82,7 +85,7 @@ class _EnterRouteMapViewState extends State<EnterRouteMapView> {
             target: viewModel.currentPosioton,
             zoom: 5,
           ),
-          // markers: Set<Marker>.of(viewModel.markers!.values),
+          markers: Set<Marker>.of(viewModel.markers.values),
           zoomGesturesEnabled: true,
           onMapCreated: (GoogleMapController controller) =>
               viewModel.controller = controller,
@@ -113,106 +116,34 @@ class _EnterRouteMapViewState extends State<EnterRouteMapView> {
                     right: context.normalValue,
                     top: context.mediumValue,
                   ),
-                  child: Observer(builder: (_) {
-                    return Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Expanded(
-                          child: SizedBox(
-                            width: double.infinity,
-                            height: context.dynamicHeight(0.045),
-                            child: Observer(builder: (_) {
-                              // return TypeAheadField(
-                              //   textFieldConfiguration: TextFieldConfiguration(
-                              //     autofocus: true,
-                              //     style: DefaultTextStyle.of(context)
-                              //         .style
-                              //         .copyWith(fontStyle: FontStyle.italic),
-                              //     decoration: const InputDecoration(
-                              //         border: OutlineInputBorder()),
-                              //   ),
-                              //   suggestionsCallback: (pattern) async {
-                              //     return viewModel.getPlaces(pattern);
-                              //   },
-                              //   itemBuilder: (context,
-                              //       EnterRouteMapResponseModel suggestion) {
-                              //     return ListTile(
-                              //       leading: Icon(Icons.shopping_cart),
-                              //       title: Text(suggestion.text),
-                              //       // subtitle: Text('\$${suggestion['price']}'),
-                              //     );
-                              //   },
-                              //   onSuggestionSelected: (suggestion) {
-                              //     // Navigator.of(context).push(MaterialPageRoute(
-                              //     //     builder: (context) =>
-                              //     //         ProductPage(product: suggestion)));
-                              //   },
-                              // );
-
-                              return Autocomplete<EnterRouteMapResponseModel>(
-                                displayStringForOption:
-                                    EnterRouteMapView._displayStringForOption,
-                                optionsBuilder:
-                                    (TextEditingValue textEditingValue) {
-                                  Future.delayed(Duration.zero, () async {
-                                    await viewModel
-                                        .getPlaces(textEditingValue.text);
-                                    setState(() {});
-                                    return viewModel.places;
-                                  });
-                                  setState(() {});
-                                  return viewModel.places;
-                                  // if (textEditingValue.text == '') {
-                                  //   viewModel.places.clear();
-                                  // }
-                                  // return viewModel.placesString;
-                                },
-                                onSelected:
-                                    (EnterRouteMapResponseModel selection) {
-                                  viewModel.getCoordinates(selection.text);
-                                  debugPrint('You just selected $selection');
-                                },
-                              );
-                            }),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      buildAutoCompleteInput(context, viewModel),
+                      SizedBox(width: context.dynamicWidth(0.02)),
+                      GestureDetector(
+                        onTap: () {
+                          viewModel.navigation.navigateToPage(
+                            path: NavigationConstants.FIND_FOOTPRINT,
+                            data: viewModel.locationToGo,
+                          );
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                              color: context.colorScheme.secondary,
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(10))),
+                          width: context.dynamicWidth(0.1),
+                          height: context.dynamicWidth(0.1),
+                          child: SvgPicture.asset(
+                            SVGImageConstants.instance.check,
+                            color: context.colorScheme.surface,
+                            fit: BoxFit.scaleDown,
                           ),
                         ),
-                        SizedBox(width: context.dynamicWidth(0.02)),
-                        GestureDetector(
-                          onTap: () {
-                            viewModel.navigation.navigateToPage(
-                                path: NavigationConstants.FIND_FOOTPRINT);
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                                color: context.colorScheme.secondary,
-                                borderRadius: const BorderRadius.all(
-                                    Radius.circular(10))),
-                            width: context.dynamicWidth(0.1),
-                            height: context.dynamicWidth(0.1),
-                            child: SvgPicture.asset(
-                              SVGImageConstants.instance.check,
-                              color: context.colorScheme.surface,
-                              fit: BoxFit.scaleDown,
-                            ),
-                          ),
-                        ),
-                      ],
-                    );
-                    // return AutoCompleteSearchInput(
-                    //   onTap: () {
-                    //     viewModel.navigation.navigateToPage(
-                    //         path: NavigationConstants.FIND_FOOTPRINT);
-                    //   },
-                    //   icon: true,
-                    //   onChanged: (value) {
-                    //     viewModel.getPlaces(value);
-                    //   },
-                    //   onSelected: (value) {
-                    //     viewModel.getCoordinates(value);
-                    //   },
-                    //   list: viewModel.placesString,
-                    // );
-                  }),
+                      ),
+                    ],
+                  ),
                 ),
                 SizedBox(height: context.normalValue),
                 Padding(
@@ -292,6 +223,73 @@ class _EnterRouteMapViewState extends State<EnterRouteMapView> {
           ],
         ),
       );
+
+  Expanded buildAutoCompleteInput(
+      BuildContext context, EnterRouteMapViewModel viewModel) {
+    return Expanded(
+      child: SizedBox(
+        width: double.infinity,
+        height: context.dynamicHeight(0.045),
+        child: TypeAheadField(
+          textFieldConfiguration: TextFieldConfiguration(
+            autofocus: false,
+            style: context.textTheme.headline6,
+            decoration: InputDecoration(
+              filled: true,
+              fillColor: context.colorScheme.surface,
+              hintStyle: TextStyle(
+                fontSize: 13,
+                color: context.colorScheme.primaryVariant,
+              ),
+              contentPadding: EdgeInsets.zero,
+              prefixIcon: SvgPicture.asset(
+                SVGImageConstants.instance.search,
+                fit: BoxFit.scaleDown,
+              ),
+              hintText: LocaleKeys.map_whereto.tr(),
+              focusColor: context.colorScheme.primaryVariant,
+              labelStyle: const TextStyle(),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  width: 0.5,
+                  color: context.colorScheme.primaryVariant,
+                ),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: context.colorScheme.primaryVariant,
+                ),
+              ),
+              focusedErrorBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: context.colorScheme.primaryVariant,
+                ),
+              ),
+              errorBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: context.colorScheme.error,
+                ),
+              ),
+              errorStyle: context.textTheme.caption!.copyWith(
+                color: context.colorScheme.error,
+              ),
+            ),
+          ),
+          suggestionsCallback: (pattern) async {
+            return await viewModel.getPlaces(pattern);
+          },
+          itemBuilder: (context, suggestion) {
+            return ListTile(
+              title: Text(suggestion.toString()),
+            );
+          },
+          onSuggestionSelected: (String suggestion) {
+            viewModel.getCoordinates(suggestion);
+          },
+        ),
+      ),
+    );
+  }
 
   // Kendi konumuma götür
   Widget _myLocation(BuildContext context, EnterRouteMapViewModel viewModel) =>

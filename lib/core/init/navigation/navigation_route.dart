@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:waseat/view/bottomtab/view/bottom_tab_view.dart';
+import 'package:waseat/view/enter_route_map/model/enter_route_map_coordinate_model.dart';
+import 'package:waseat/view/enter_route_map/model/enter_route_map_coordinate_response_model.dart';
 import 'package:waseat/view/find_footprint/view/find_footprint_view.dart';
 
 import '../../../view/splash/view/splash_view.dart';
@@ -19,7 +21,8 @@ class NavigationRoute {
       case NavigationConstants.BOTTOMTAB:
         return normalNavigate(const BottomTabView());
       case NavigationConstants.FIND_FOOTPRINT:
-        return normalNavigate(FindFootprintView());
+        final model = args.arguments as EnterRouteMapCoordinateResponseModel;
+        return normalNavigate(FindFootprintView(coordinateModel: model));
       default:
         return MaterialPageRoute(
           builder: (context) => const NotFoundNavigationWidget(),
