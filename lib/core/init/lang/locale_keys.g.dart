@@ -7,7 +7,7 @@ abstract class  LocaleKeys {
   static const footprint_hello = 'footprint.hello';
   static const footprint_history = 'footprint.history';
   static const footprint_totalSteps = 'footprint.totalSteps';
-  static const footprint_totalBalance = 'footprint.totalBalance';
+  static const footprint_carbonHistory = 'footprint.carbonHistory';
   static const footprint_today = 'footprint.today';
   static const footprint_week = 'footprint.week';
   static const footprint_month = 'footprint.month';

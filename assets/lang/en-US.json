@@ -6,7 +6,7 @@
         "hello": "Hello",
         "history": "You have @number history",
         "totalSteps": "Total Steps",
-        "totalBalance": "Total Balance",
+        "carbonHistory": "Carbon History",
         "today": "Today",
         "week": "Week",
         "month": "Month"
