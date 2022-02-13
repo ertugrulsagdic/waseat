@@ -31,6 +31,8 @@ abstract class _LoginViewModelBase with Store, BaseViewModel {
     loginService = LoginService(vexanaManager.networkManager);
     emailController = TextEditingController();
     passwordController = TextEditingController();
+    emailController!.text = 'bayramlcm16@gmail.com';
+    passwordController!.text = '12345678';
   }
 
   @observable
@@ -52,7 +54,7 @@ abstract class _LoginViewModelBase with Store, BaseViewModel {
   @action
   Future<void> postLogin() async {
     isLoadingChange();
-    
+
     final response = await loginService.postLogin(
       LoginModel(
         email: emailController!.text,
@@ -61,11 +63,13 @@ abstract class _LoginViewModelBase with Store, BaseViewModel {
     );
 
     if (response!.type == true) {
-      LocaleManager.instance.setStringValue(PreferencesKeys.TOKEN, response.data["token"]);
+      LocaleManager.instance
+          .setStringValue(PreferencesKeys.TOKEN, response.data["token"]);
       navigation.navigateToPageClear(path: NavigationConstants.BOTTOMTAB);
     } else {
       showMessage(response);
     }
 
     isLoadingChange();
-  }}
+  }
+}
