@@ -232,6 +232,7 @@ class _EnterRouteMapViewState extends State<EnterRouteMapView> {
         height: context.dynamicHeight(0.045),
         child: TypeAheadField(
           textFieldConfiguration: TextFieldConfiguration(
+            controller: viewModel.searchController,
             autofocus: false,
             style: context.textTheme.headline6,
             decoration: InputDecoration(

@@ -161,6 +161,7 @@ class FindFootprintMapView extends StatelessWidget {
                   context,
                   onPressed: () {
                     // TODO: send to backend
+                    Navigator.pop(context);
                   },
                   title: LocaleKeys.button_save.tr(),
                   rounded: false,

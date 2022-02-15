@@ -228,7 +228,9 @@ class FindFootprintListView extends StatelessWidget {
                             ),
                             buildButton(
                               context,
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
                               title: LocaleKeys.button_save.tr(),
                               rounded: false,
                             )

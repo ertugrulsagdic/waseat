@@ -187,11 +187,19 @@ class FootPrintView extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
                             '22 şubat',
                             style: context.textTheme.headline6!.copyWith(
                               color: context.colorScheme.primaryVariant,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          Text(
+                            '1000 CO2',
+                            style: context.textTheme.headline4!.copyWith(
+                              color: context.colorScheme.onSurface,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
@@ -265,9 +273,10 @@ class FootPrintView extends StatelessWidget {
                           )
                         ],
                       ),
-                      // SizedBox(height: context.normalValue),
+                      SizedBox(height: context.normalValue),
                       SizedBox(
                         child: ListView.builder(
+                          padding: EdgeInsets.zero,
                           shrinkWrap: true,
                           itemCount: index + 1,
                           itemBuilder: (context, index) {

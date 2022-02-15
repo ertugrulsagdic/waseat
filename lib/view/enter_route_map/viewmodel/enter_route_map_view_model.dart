@@ -122,6 +122,8 @@ abstract class _EnterRouteMapViewModelBase with Store, BaseViewModel {
 
       markers = ObservableMap.of({MarkerId(response.data.address): marker});
 
+      searchController!.text = selectedString;
+
       controller.animateCamera(
         CameraUpdate.newCameraPosition(
           CameraPosition(

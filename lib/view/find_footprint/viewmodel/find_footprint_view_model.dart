@@ -52,7 +52,10 @@ abstract class _FindFootprintViewModelBase with Store, BaseViewModel {
     toController = TextEditingController();
     footprintService = FindFootprintService(vexanaManager.networkManager);
     WidgetsBinding.instance!.addPostFrameCallback((_) async {
-      if (coordinateModel != null) {
+      if (coordinateModel != null &&
+          coordinateModel.address != null &&
+          coordinateModel.lat != null &&
+          coordinateModel.lng != null) {
         print(coordinateModel.toJson());
         inspect(coordinateModel.toJson());
         toMarker = Marker(
@@ -271,6 +274,9 @@ abstract class _FindFootprintViewModelBase with Store, BaseViewModel {
           },
         );
       }
+
+      fromController.text = isFrom ? selectedString : fromController.text;
+      toController.text = !isFrom ? selectedString : toController.text;
 
       fromPosition =
           isFrom ? LatLng(response.data.lat, response.data.lng) : fromPosition;
